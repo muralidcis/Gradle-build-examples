@@ -1,0 +1,32 @@
+apply plugin: 'java'
+
+//
+// source path 
+//
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+ 
+    }
+}
+
+//
+// Redefine where .class files are written
+//
+
+sourceSets.main.output.classesDir = file("dist/classes")
+
+//
+// create jar inside dist/jar 
+//
+jar {
+   destinationDir = file('dist/jar')
+}
+
+
+
+    
+
