@@ -1,32 +1,66 @@
+
 apply plugin: 'java'
+import org.ajoberstar.grgit.*
+    
+buildscript {
+    repositories { mavenCentral() }
+     dependencies { classpath 'org.ajoberstar:gradle-git:0.8.0' }
+}
 
-//
+
+
+// Dependencies
+dependencies { 
+    // specify the lib files at compile and run time 	     
+    compile fileTree(dir: 'lib', include: ['**/*.jar','*.jar'])
+    runtime fileTree(dir: 'lib', include: ['**/*.jar','*.jar'])
+}
+
+
 // source path 
-//
-
 sourceSets {
     main {
         java {
-            srcDirs 'src'
+	    srcDirs 'src'
         }
- 
+	
     }
 }
 
-//
-// Redefine where .class files are written
-//
 
-sourceSets.main.output.classesDir = file("dist/classes")
+// return the git tag version
+def getVersion = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags', '--dirty'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    } catch (ignored) {
+        return 'dev';
+     }
+}
 
-//
-// create jar inside dist/jar 
-//
-jar {
-   destinationDir = file('dist/jar')
+
+task modulejar(type: Jar) {     
+    destinationDir = file('dist/jar')
+    baseName = 'module-'+getVersion()
+    // Redefine where .class files are written
+    sourceSets.main.output.classesDir = file("dist/classes")
+    //from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+}
+
+
+// clean the dist and build folder 
+task cleanjar(type: Delete) {
+    delete 'dist','build'
 }
 
 
 
-    
+
+
 

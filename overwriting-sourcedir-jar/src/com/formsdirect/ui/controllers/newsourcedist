@@ -1,5 +1,0 @@
-package com.formsdirect.ui.controllers;
-import java.io.*;
-public class newsourcedist(){
-       public void newsourcedist(){}
-}
