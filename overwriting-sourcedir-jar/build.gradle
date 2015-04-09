@@ -1,13 +1,5 @@
 
 apply plugin: 'java'
-import org.ajoberstar.grgit.*
-    
-buildscript {
-    repositories { mavenCentral() }
-     dependencies { classpath 'org.ajoberstar:gradle-git:0.8.0' }
-}
-
-
 
 // Dependencies
 dependencies { 
@@ -46,9 +38,9 @@ def getVersion = { ->
 task modulejar(type: Jar) {     
     destinationDir = file('dist/jar')
     baseName = 'module-'+getVersion()
+
     // Redefine where .class files are written
     sourceSets.main.output.classesDir = file("dist/classes")
-    //from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 
 }
