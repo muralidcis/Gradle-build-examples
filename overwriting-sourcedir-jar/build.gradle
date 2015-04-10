@@ -133,4 +133,13 @@ theResult = theList.inject([:])
 println theResult
 }
 
+task fewmoreaddtion{
+new File('/path/to/file').eachLine { line ->
+  println line
+  
+  String fileContentAsString = new File("/path/file.ext").text
+def fileContentAsObject = new File("/path/file.ext").text
+
+//http://stackoverflow.com/questions/4089754/groovy-reading-a-range-of-lines-from-file
+}
 
