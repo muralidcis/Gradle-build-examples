@@ -120,6 +120,17 @@ files.each { new File(it).delete() }
 }
 
 
-
+//
+task readinfo{
+def theList = ["Chicago, IL", "Sacramento, CA"]
+theResult = theList.inject([:])
+{
+    theMap, theListItem ->
+    def theEntry = theListItem.split(",")
+    theMap.put(theEntry[0].trim(), theEntry[1].trim())
+    theMap
+}
+println theResult
+}
 
 
