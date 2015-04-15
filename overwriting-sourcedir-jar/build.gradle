@@ -143,3 +143,22 @@ def fileContentAsObject = new File("/path/file.ext").text
 //http://stackoverflow.com/questions/4089754/groovy-reading-a-range-of-lines-from-file
 }
 
+
+task testtojson{
+
+File f = new File(tempDir+File.separator+'jsonObject.txt')
+def slurper = new JsonSlurper()
+def jsonText = f.getText()
+json = slurper.parseText( jsonText )
+
+//Writing json to a file:
+
+File g = new File(tempDir+File.separator+'jsonObject.txt')
+            g.createNewFile()
+            def json = new JsonBuilder()
+            json {
+                "result" result
+                }       
+            g.setText(json.toString())
+}
+
