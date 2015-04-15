@@ -34,7 +34,7 @@ def getVersion = { ->
      }
 }
 
-
+// create jar 
 task modulejar(type: Jar) {     
     destinationDir = file('dist/jar')
     baseName = 'module-'+getVersion()
@@ -51,7 +51,7 @@ task cleanjar(type: Delete) {
     delete 'dist','build'
 }
 
-
+// how to read a file 
 task readFile{
     def line  
     new File("test.txt").withReader { line = it.readLine() }  
