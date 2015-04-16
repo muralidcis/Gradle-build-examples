@@ -1,0 +1,25 @@
+apply plugin: 'java'
+
+def sourceList=[]
+def deployMap = [:]
+
+task splitStrings{
+    // Loading to sourcelist from source file   
+    new File('feeder.txt').eachLine { line ->
+      if(line !=null){
+	  sourceList.add(line)
+      }
+    }
+
+    sourceList.each{
+	def (value1,value2,value3) = "$it.value".tokenize('{')
+	deployMap.put(value1.tokenize(','), value2+value3)	
+    }    
+
+    deployMap.each {
+	def (value1,value2) = "$it.value".tokenize('}')
+	println ("$it.key")
+	println value1
+	println value2.substring(1)
+    }    
+}

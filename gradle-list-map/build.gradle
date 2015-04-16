@@ -1,0 +1,38 @@
+//
+// Create a file called feeder.txt and save some text there 
+// Reads the text from the file 
+// converts into to a list , and maps it with key and value into deploymap, 
+// split strings, may be insted of spliting it i should have made convert into a json so it will be easy to call the elements
+//
+//
+
+
+apply plugin: 'java'
+
+def sourceList=[]
+def deployMap = [:]
+
+task splitStrings{
+    // Loading to sourcelist from source file   
+    new File('feeder.txt').eachLine { line ->
+      if(line !=null){
+	  sourceList.add(line)
+      }
+    }
+
+    sourceList.each{
+	def (value1,value2,value3) = "$it.value".tokenize('{')
+	deployMap.put(value1.tokenize(','), value2+value3)	
+    }    
+
+    deployMap.each {
+        // strip out the '}' from the map 
+	def (value1,value2) = "$it.value".tokenize('}')
+
+	println ("$it.key")
+	println value1
+
+	// to remove the "{" from the string 
+	println value2.substring(1)
+    }    
+}

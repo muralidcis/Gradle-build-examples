@@ -1,0 +1,2 @@
+controller,{src/com},{src/com/formdirectinc}
+user,{src/com,lib/*.java,main/src},{src/com/formdirectinc}
