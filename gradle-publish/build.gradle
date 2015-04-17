@@ -1,0 +1,51 @@
+//
+// Will upload the compiled jar file to http://localhost:8080/archiva/repository/internal
+// To run use [gradle upload]
+//  I need to find out how to load multiple files or specific war files 
+//
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+repositories {
+    maven {
+        url "http://localhost:8080/archiva/repository/internal"
+	credentials {
+            username = "admin"
+            password = "welcome0"
+        }
+    }
+}
+
+// Dependencies
+dependencies { 
+    // specify the lib files at compile and run time	     
+    compile fileTree(dir: 'lib', include: ['**/*.jar','*.jar'])
+    runtime fileTree(dir: 'lib', include: ['**/*.jar','*.jar'])
+}
+
+
+// source path 
+sourceSets {
+    main {
+        java {
+	    srcDirs 'src'
+        }
+	
+    }
+}
+
+uploadArchives {
+    repositories {
+	mavenDeployer {
+	    repository(url: "http://localhost:8080/archiva/repository/internal") {
+		authentication(userName: "admin", password: "welcome0")
+	    }
+	    pom.version = "1.0-SNAPSHOT"
+	    pom.artifactId = "fd-common"
+	    pom.groupId = "com.formsdirect.common"
+	}    
+	
+    }
+}
+
