@@ -1,0 +1,8 @@
+how to install apache archiva
+download a tar,r war. extract it to /usr/local
+
+/usr/local/apache-archiva/bin/start 
+
+Create a user admin and enjoy adding files
+
+
