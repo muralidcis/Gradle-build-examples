@@ -1,7 +1,7 @@
 //
-// Will upload the compiled jar file to http://localhost:8080/archiva/repository/internal
+// This Will upload the compiled jar file to http://localhost:8080/archiva/repository/internal
 // To run use [gradle upload]
-//  I need to find out how to load multiple files or specific war files 
+// I need to find out how to load multiple files or specific jars or a specific wars 
 //
 
 apply plugin: 'java'
@@ -9,10 +9,10 @@ apply plugin: 'maven'
 
 repositories {
     maven {
-        url "http://localhost:8080/archiva/repository/internal"
+        url "$archivaUrl"
 	credentials {
-            username = "admin"
-            password = "welcome0"
+            username = "$userName"
+            password = "$passWord"
         }
     }
 }
@@ -38,8 +38,8 @@ sourceSets {
 uploadArchives {
     repositories {
 	mavenDeployer {
-	    repository(url: "http://localhost:8080/archiva/repository/internal") {
-		authentication(userName: "admin", password: "welcome0")
+	    repository(url: "$archivaUrl") {
+		authentication(userName: "$userName", password: "$passWord")
 	    }
 	    pom.version = "1.0-SNAPSHOT"
 	    pom.artifactId = "fd-common"
