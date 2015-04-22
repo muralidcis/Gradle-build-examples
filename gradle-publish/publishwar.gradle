@@ -1,0 +1,52 @@
+//
+// Bundle war and upload to  http://localhost:8080/archiva/repository/internal
+// To run use [gradle upload]
+//
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'distribution'
+apply plugin: 'war'
+
+
+repositories {
+    maven {
+        url "$archivaUrl"
+	credentials {
+            username = "$userName"
+            password = "$passWord"
+        }
+    }
+}
+
+
+war {
+    // adds a file-set to the root of the archive
+    from 'dist/i90' 
+}
+
+
+distributions {
+    main {
+	// dynamic values
+        baseName = 'i90.war'
+        contents {
+            from { 'dist/' }
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+	mavenDeployer {
+	    repository(url: "$archivaUrl") {
+		authentication(userName: "$userName", password: "$passWord")
+	    }
+	    pom.version = "1.0-SNAPSHOT"
+	    pom.artifactId = "i90"
+	    pom.groupId = "com.formsdirect"
+	    
+	}
+	
+    }
+}

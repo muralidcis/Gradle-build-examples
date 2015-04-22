@@ -1,0 +1,8 @@
+{
+    "modules": {
+	"controller":{"sourcePath":"src/java/main/com/forms","includePath":"src/java/main/formsdirect/ui,src/controller/java","excludePath":"src/java/main/formsdirectinc"},
+	"user":{"sourcePath":"src/java/main/pdf","includePath":"src/java/main/formsdirect/ui","excludePath":"src/java/main/formsdirectinc"},
+	"fd-commons":{"sourcePath":"src/com/formsdirectinc/efiling","includePath":"src/java/main/formsdirect/ui","excludePath":"src/java/main/formsdirectinc"},
+	"rules":{"sourcePath":"src/com/formsdirectinc/rules","includePath":"src/java/main/formsdirect/ui,src/java/main/rules"}
+    }
+}

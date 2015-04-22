@@ -1,0 +1,23 @@
+//
+// load json data from a json txt files and then split the elements  and print it
+//
+
+import groovy.json.JsonSlurper
+
+task jsonload {
+    def inputFile = new File("json.txt")
+    Object result = new JsonSlurper().parseText(inputFile.text)
+    result.modules.each {
+	id,data -> println id
+	if(data.sourcePath !=null) {
+	    println data.sourcePath
+	}
+	if(data.includePath !=null) {
+	    println data.includePath
+	}
+	if(data.excludePath !=null) {
+	    println data.excludePath 
+	}
+	println "  " 
+    }    
+}
