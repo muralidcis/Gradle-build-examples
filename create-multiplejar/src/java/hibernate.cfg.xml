@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory name="java:comp/env/hibernate/sessionfactory">
+        <property name="hibernate.connection.datasource">java:comp/env/jdbc/mysql</property>
+        <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+        <property name="hibernate.cache.region_prefix">hibernate.test</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.generator.class">org.hibernate.id.IdentityGenerator</property>
+        <property name="hibernate.jdbc.batch_versioned_data">true</property>
+        <property name="hibernate.jdbc.use_streams_for_binary">true</property>
+        <property name="hibernate.max_fetch_depth">1</property>
+        <property name="hibernate.query.substitutions">yes 'Y', no 'N'</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+     
+        <mapping resource="com/formsdirectinc/user/PaymentT.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/CommentsTable.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/ProductCost.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/CustomerSignup.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/ApplicationTable.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/ApplicationMetaData.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/StageMetaData.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/Stage.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/EFiledApplication.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/AppCenterApplicationTable.hbm.xml"/>
+        <mapping resource="com/formsdirectinc/user/AppCenterStage.hbm.xml" />
+        <mapping resource="com/formsdirectinc/user/UsCitiesT.hbm.xml" />
+
+    </session-factory>
+</hibernate-configuration>
