@@ -87,9 +87,9 @@ deployMap.each {
     // Create jar
 
 
-// ant.jar(destfile:project.ant.destfile, basedir:project.ant."dist.dir")
+// Generate Jar files using ant.jar 
     ant.jar(destfile: "build/"+value1.minus("[")+"-"+getVersion()+".jar"){
-//        fileset(dir:"build/"+value2.minus("]"), includes:"**.class")
+// build will take the files and includes wil fiter and add files from the foreach ie, frm only the nesseary files,it was bit tricky
 	  fileset(dir:"build/", includes:value2.minus("]")+'/**.class')
     }
  }
