@@ -1,0 +1,91 @@
+//
+// Load  jsondata from a file and then do a each and compile java and generate jar for that module.
+// I should load jsondata to a map and then reuse it ?
+//
+// List of tasks
+// gradle generatejar
+// gradle cleanjar
+// gralde clean
+
+// import jsonslurper..... to get json data
+import groovy.json.JsonSlurper
+apply plugin: 'java'
+
+configurations {
+  antcompile
+}
+
+// Dependencies
+dependencies {
+  // specify the lib files at compile and run time
+  compile fileTree(dir: 'lib', include: ['**/*.jar','*.jar'])
+  runtime fileTree(dir: 'lib', include: ['**/*.jar','*.jar'])
+  antcompile fileTree(dir: 'lib', include: ['**/*.jar','*.jar'])
+}
+
+//
+// return the git tag version this will be added to the generated jar module
+//
+def getVersion = { ->
+  try {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+      commandLine 'git', 'describe', '--tags', '--dirty'
+      standardOutput = stdout
+    }
+    return stdout.toString().trim()
+    } catch (ignored) {
+      return 'dev';
+    }
+  }
+
+  // variable decleration
+  def deployDist = new File('build/src/java')
+  def jarModuleName
+  def jarModulePath
+  def jarModuleinclude
+  def jarModuleExclude
+
+  task generatejar {
+
+    def inputFile = new File("json.txt")
+    Object result = new JsonSlurper().parseText(inputFile.text)
+
+    //
+    // I think i should put these following json data into a map so that i can  reuse them... ?
+    //
+
+    // create folder
+    delete 'build'
+    deployDist.mkdirs()
+
+    result.modules.each {
+      id,data -> jarModuleName = id
+      if(data.sourcePath !=null) {
+        jarModulePath = data.sourcePath
+        println data.sourcePath
+      }
+      if(data.includePath !=null) {
+        jarModuleinclude=data.includePath
+        println data.includePath
+      }
+      if(data.excludePath !=null) {
+        jarModuleExclude = data.excludePath
+        println data.excludePath
+      }
+
+      ant.javac (srcDir:jarModuleinclude, destDir:"build/src/java", failonerror: true, fork: true, classpath:configurations.antcompile.asPath) {
+        include(name:'**/*.java')
+      }
+
+      ant.jar(destfile: "build/"+jarModuleName+"-"+getVersion()+".jar"){
+        fileset(dir:"build/", includes:jarModuleinclude+'/**.class')
+      }
+    }
+  }
+  
+
+  // clean the dist and build folder
+  task cleanjar(type: Delete) {
+    delete 'distribution','build'
+  }

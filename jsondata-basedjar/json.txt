@@ -1,0 +1,6 @@
+{
+    "modules": {
+	"controller":{"sourcePath":"src/java/com/formsdirectinc/ui/controllers","includePath":"src/java/com/formsdirectinc/ui/controllers","excludePath":"src/java/main/"},
+	"validations":{"sourcePath":"src/java/com/formsdirectinc/validations","includePath":"src/java/com/formsdirectinc/validations","excludePath":"src/java/main"}
+    }
+}
