@@ -1,5 +1,0 @@
-controller,com/formsdirectinc/ui/controllers
-rules,com/formsdirectinc/rules/**/*.class
-interaction,com/formsdirectinc/ui/interaction/**/*.class
-security,com/formsdirectinc/security
-validations,com/formsdirectinc/validations/*.class
