@@ -74,16 +74,21 @@ def getVersion = { ->
         println data.excludePath
       }
 
-      ant.javac (srcDir:jarModuleinclude, destDir:"build/src/java", failonerror: true, fork: true, classpath:configurations.antcompile.asPath) {
+      ant.javac (srcDir:jarModulePath, destDir:"build/src/java", failonerror: true, fork: true, classpath:configurations.antcompile.asPath) {
         include(name:'**/*.java')
       }
-
-      ant.jar(destfile: "build/"+jarModuleName+"-"+getVersion()+".jar"){
-        fileset(dir:"build/", includes:jarModuleinclude+'/**.class')
-      }
+	
+	ant.jar(destfile: "build/"+jarModuleName+"-"+getVersion()+".jar"){
+	    if(jarModuleExclude !=null) {
+//		fileset(dir:"build/src/java", includes:jarModuleinclude+'**/**.class,**.class', excludes:jarModuleExclude)
+		fileset(dir:"build/src/java", includes:jarModuleinclude, excludes:jarModuleExclude)
+	    } else {
+//		fileset(dir:"build/src/java", includes:jarModuleinclude+'**/**.class,**.class')
+		fileset(dir:"build/src/java", includes:jarModuleinclude)
+	    }
+	}
     }
   }
-  
 
   // clean the dist and build folder
   task cleanjar(type: Delete) {

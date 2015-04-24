@@ -1,6 +1,9 @@
 {
     "modules": {
-	"controller":{"sourcePath":"src/java/com/formsdirectinc/ui/controllers","includePath":"src/java/com/formsdirectinc/ui/controllers","excludePath":"src/java/main/"},
-	"validations":{"sourcePath":"src/java/com/formsdirectinc/validations","includePath":"src/java/com/formsdirectinc/validations","excludePath":"src/java/main"}
-    }
+	"controller":{"sourcePath":"src/java/com/formsdirectinc/ui/controllers","includePath":"com/formsdirectinc/ui/controllers/*.class","excludePath":""},
+	"validations":{"sourcePath":"src/java/com/formsdirectinc/validations","includePath":"com/formsdirectinc/validations/*.class","excludePath":""},
+	"fd-commons":{"sourcePath":"src/java/com/formsdirectinc/","includePath":"com/formsdirectinc/**/*.class","excludePath":"com/formsdirectinc/security/CryptoDelegate.class,com/formsdirectinc/rules/**/*.class,com/formsdirectinc/security/AESUtils.class"},
+	"rules":{"sourcePath":"src/java/com/formsdirectinc/","includePath":"com/formsdirectinc/rules/*.class,com/formsdirectinc/xao/*.class","excludePath":""}
+	    }
 }
+
