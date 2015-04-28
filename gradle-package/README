@@ -1,0 +1,36 @@
+How to run gradle witout the gradle installation and setup.
+Gradle uses wrapper task, basically they are java classes, which download and fetches gradle to the system at run time. 
+
+
+create a build.gradle and add the task with the following wrapper and the gradle version.
+
+task createWrapper(type: Wrapper) {
+     gradleVersion = '2.2.1'
+}
+  
+Run this build to generate gradlew sh and executable classes. 
+
+After running the task this will generate  the following files and this use this configuration in the deploy system to use it without pre installation of gradle scripts. 
+
+
+|-- build.gradle
+|-- gradle
+|   `-- wrapper
+|       |-- gradle-wrapper.jar
+|       `-- gradle-wrapper.properties
+|-- gradlew
+|-- gradlew.bat
+
+
+Example:
+task sayhello{
+println 'hello world!'
+}
+
+sudo ./gradlew sayhello, this wil download the gradle 2.2.1 and execute the task.
+
+
+
+
+
+
