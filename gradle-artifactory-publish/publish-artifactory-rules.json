@@ -1,0 +1,8 @@
+{
+    "publish": {
+	"fd-user":{"groupId":"com.formsdirectinc","artifactId":"fd-user","version":"SNAPSHOT-1.1","dependancy":""},
+	"fd-payment":{"groupId":"com.formsdirectinc","artifactId":"fd-payment","version":"SNAPSHOT-1.1","dependancy":""},
+    }
+}
+
+
