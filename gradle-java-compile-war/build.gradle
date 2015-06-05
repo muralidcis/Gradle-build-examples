@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+repositories {
+    mavenCentral()
+	}
+
+dependencies {
+    compile "joda-time:joda-time:2.2"
+	}
+
+
+
+task compileOne (type: JavaCompile) {
+    source = sourceSets.main.java.srcDirs
+	classpath = sourceSets.main.compileClasspath
+	destinationDir = sourceSets.main.output.classesDir
+	}
+
+war {
+    archiveName 'gen-war.war'
+        }
