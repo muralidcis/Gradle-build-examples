@@ -1,7 +1,8 @@
 
 apply plugin: 'java'
 apply plugin: 'maven'
-
+apply plugin: 'distribution'
+apply plugin: 'war'
 
 // import jsonslurper..... to get json data
 import groovy.json.JsonSlurper
@@ -10,63 +11,56 @@ def MODULE_BUILD_RULES_FILE = "publish-artifactory-rules.json"
 def inputFile = new File(MODULE_BUILD_RULES_FILE)
 Object result = new JsonSlurper().parseText(inputFile.text)
 def fileLocation
-def fileName
+def moduleName
 def fileHolder
-
-
-repositories {
-  maven {
-    url "$archivaUrl"
-    credentials {
-      username = "$userName"
-      password = "$passWord"
-    }
-  }
-}
 
 
 // setting up the group ID
 group = theGroup
 
+afterEvaluate {
+  uploadArchives {
+    repositories {
 
-uploadArchives {
-  repositories {
+      // apache archiva connection  and authentication
+      mavenDeployer {
+        repository(url: "$archivaUrl") {
+          authentication(userName: "$userName", password: "$passWord")
+        }
 
-    // apache archiva connection  and authentication
-    mavenDeployer {
-      repository(url: "$archivaUrl") {
-        authentication(userName: "$userName", password: "$passWord")
-      }
+        //
+        // fetch the filename, groupId, artifactId and other information from the json data file
+        // Run the each loop to upload multiple jar files
+        //
 
-      //
-      // fetch the filename, groupId, artifactId and other information from the json data file
-      // Run the each loop to upload multiple jar files
-      //
-
-      result.publish.each {
-
-        id,data -> fileName = id
-        if(data.groupId !=null && data.artifactId !=null && data.version !=null) {
-
+        // fail -fast !
+        result.publish.each {
+          id,data -> moduleName = id
           group=data.groupId
 
-          fileHolder = file("build/"+fileName+".jar")
-          artifacts {
-            archives(fileHolder) {
-              name fileName
-              type 'jar'
+          // find a check to see war or jar ?
+          if(data.dependancy =="jar") {
+            fileHolder = file("build/"+moduleName+".jar")
+            } else { if(data.dependancy =="war") {
+              fileHolder = file("build/"+moduleName+".war")
             }
-          }
+            artifacts {
+              archives(fileHolder) {
+                name moduleName
+                type data.dependancy
+              }
+            }
 
-          addFilter(fileName) {artifact, file ->
-            artifact.name == fileName
+            addFilter(moduleName) {artifact, file ->
+              artifact.name == moduleName
+            }
+            pom(moduleName).version = data.version
+            pom.artifactId = data.artifactId
+            pom.groupId = data.groupId
           }
-          pom(fileName).version = data.version
-          pom.artifactId = data.artifactId
-          pom.groupId = data.groupId
         }
+
       }
     }
-
   }
 }
