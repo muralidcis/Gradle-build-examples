@@ -1,7 +1,30 @@
 {
-  "publish": {
-    "fd-user":{"groupId":"com.formsdirectinc","artifactId":"fd-user","version":"SNAPSHOT-1.1","dependancy":""},
-    "fd-payment":{"groupId":"com.formsdirectinc","artifactId":"fd-payment","version":"SNAPSHOT-1.1","dependancy":""},
-    "n400":{"groupId":"com.formsdirectinc","artifactId":"id-n400","version":"SNAPSHOT-1.1","dependancy":"war"}
-  }
+    "jar": {
+        "fd-module": {
+            "groupId": "com.formsdirectinc",
+            "artifactId": "fd-user",
+            "version": "SNAPSHOT-1.1",
+            "fileType": "jar",
+            "dependancy": {
+                "fd-controllers": {
+                    "depFile": "fd-controllers",
+                    "depVersion": "1.1.1"
+                },
+                "fd-users": {
+                    "depFile": "fd-controllers",
+                    "depVersion": "1.1.1"
+                }
+            }
+        }
+    },
+    "war": {
+        "registration": {
+            "groupId": "com.formsdirectinc",
+            "artifactId": "id-registration",
+            "version": "SNAPSHOT-1.1",
+            "fileType": "war",
+            "dependancy": "fd-controllers",
+            "depVersion": "1.1.1"
+        }
+    }
 }

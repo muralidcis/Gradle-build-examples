@@ -1,4 +1,3 @@
-
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'distribution'
@@ -10,57 +9,66 @@ def MODULE_BUILD_RULES_FILE = "publish-artifactory-rules.json"
 
 def inputFile = new File(MODULE_BUILD_RULES_FILE)
 Object result = new JsonSlurper().parseText(inputFile.text)
+
 def fileLocation
 def moduleName
 def fileHolder
 
+def moduleType
 
 // setting up the group ID
 group = theGroup
 
-afterEvaluate {
-  uploadArchives {
-    repositories {
+uploadArchives << {
+  println 'publishing '+moduleType+' to apache archiva'
+  repositories {
 
-      // apache archiva connection  and authentication
-      mavenDeployer {
-        repository(url: "$archivaUrl") {
-          authentication(userName: "$userName", password: "$passWord")
-        }
-
-        //
-        // fetch the filename, groupId, artifactId and other information from the json data file
-        // Run the each loop to upload multiple jar files
-        //
-
-        // fail -fast !
-        result.publish.each {
-          id,data -> moduleName = id
-          group=data.groupId
-
-          // find a check to see war or jar ?
-          if(data.dependancy =="jar") {
-            fileHolder = file("build/"+moduleName+".jar")
-            } else { if(data.dependancy =="war") {
-              fileHolder = file("build/"+moduleName+".war")
-            }
-            artifacts {
-              archives(fileHolder) {
-                name moduleName
-                type data.dependancy
-              }
-            }
-
-            addFilter(moduleName) {artifact, file ->
-              artifact.name == moduleName
-            }
-            pom(moduleName).version = data.version
-            pom.artifactId = data.artifactId
-            pom.groupId = data.groupId
-          }
-        }
-
+    // apache archiva connection  and authentication
+    mavenDeployer {
+      repository(url: "$archivaUrl") {
+        authentication(userName: "$userName", password: "$passWord")
       }
     }
+
+    result.moduleType.each {
+      id,data -> moduleName = id
+
+      // Generate the file and type
+      fileHolder = file("build/"+moduleName+"."+moduleType)
+
+      // Defining artifact for the above generated file
+      artifacts {
+        archives(fileHolder) {
+          name moduleName
+          type moduleType
+        }
+      }
+
+      // Addition of filter for POM associated and for uploading multiple artifacts
+      addFilter(moduleName){artifact, file ->
+        artifact.name=moduleName
+      }
+
+      pom(moduleName).version = data.version
+      pom(moduleName).artifactId = data.artifactId
+      pom(moduleName).groupId = data.groupId
+
+      println fileHolder
+
+
+    }
+
   }
+
+}
+
+
+task uploadLibraries << {
+  moduleType='jar'
+  tasks.uploadArchives.execute()
+}
+
+task uploadWars << {
+  moduleType='war'
+  tasks.uploadArchives.execute()
 }
