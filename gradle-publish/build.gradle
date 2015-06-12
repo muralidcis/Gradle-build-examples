@@ -43,7 +43,7 @@ uploadArchives {
 	    }
 	    pom.version = "1.0-SNAPSHOT"
 	    pom.artifactId = "fd-common"
-	    pom.groupId = "com.formsdirect.common"
+	    pom.groupId = "com.testinc.common"
 	}    
 	
     }

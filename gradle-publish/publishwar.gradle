@@ -29,7 +29,7 @@ war {
 distributions {
     main {
 	// dynamic values
-        baseName = 'i90.war'
+        baseName = 'Ai90.war'
         contents {
             from { 'dist/' }
         }
@@ -43,8 +43,8 @@ uploadArchives {
 		authentication(userName: "$userName", password: "$passWord")
 	    }
 	    pom.version = "1.0-SNAPSHOT"
-	    pom.artifactId = "i90"
-	    pom.groupId = "com.formsdirect"
+	    pom.artifactId = "Ai90"
+	    pom.groupId = "com.testinc"
 	    
 	}
 	
