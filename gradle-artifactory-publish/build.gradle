@@ -1,7 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'maven'
-apply plugin: 'distribution'
-apply plugin: 'war'
 
 // import jsonslurper..... to get json data
 import groovy.json.JsonSlurper
@@ -9,59 +7,41 @@ def MODULE_BUILD_RULES_FILE = "publish-artifactory-rules.json"
 
 def inputFile = new File(MODULE_BUILD_RULES_FILE)
 Object result = new JsonSlurper().parseText(inputFile.text)
-
 def fileLocation
 def moduleName
 def fileHolder
-
 def moduleType
 
-// setting up the group ID
-group = theGroup
-
 uploadArchives << {
-  println 'publishing '+moduleType+' to apache archiva'
   repositories {
-
-    // apache archiva connection  and authentication
     mavenDeployer {
       repository(url: "$archivaUrl") {
         authentication(userName: "$userName", password: "$passWord")
       }
-    }
 
-    result.moduleType.each {
-      id,data -> moduleName = id
 
-      // Generate the file and type
-      fileHolder = file("build/"+moduleName+"."+moduleType)
+      result[moduleType].each {
+        id,data -> moduleName = id
 
-      // Defining artifact for the above generated file
-      artifacts {
-        archives(fileHolder) {
-          name moduleName
-          type moduleType
+        // To run war or jar !
+        fileHolder = file("build/"+moduleName+"."+moduleType)
+        artifacts {
+          archives(fileHolder) {
+            name moduleName
+            type moduleType
+          }
+
+          addFilter(moduleName) {artifact, file ->
+            artifact.name == moduleName
+          }
+          pom(moduleName).version =data.version
+          pom(moduleName).groupId =data.groupId
+
         }
       }
-
-      // Addition of filter for POM associated and for uploading multiple artifacts
-      addFilter(moduleName){artifact, file ->
-        artifact.name=moduleName
-      }
-
-      pom(moduleName).version = data.version
-      pom(moduleName).artifactId = data.artifactId
-      pom(moduleName).groupId = data.groupId
-
-      println fileHolder
-
-
     }
-
   }
-
 }
-
 
 task uploadLibraries << {
   moduleType='jar'
