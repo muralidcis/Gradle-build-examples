@@ -11,20 +11,35 @@ def fileLocation
 def moduleName
 def fileHolder
 def moduleType
+def depModuleName
 
-uploadArchives << {
+uploadArchives  {
+  String taskName =project.gradle.startParameter.taskNames
+  moduleType =(taskName=='[uploadLibraries]')?'jar':'war'
+  println 'upload modules for '+moduleType
   repositories {
     mavenDeployer {
       repository(url: "$archivaUrl") {
         authentication(userName: "$userName", password: "$passWord")
       }
 
-
       result[moduleType].each {
         id,data -> moduleName = id
 
         // To run war or jar !
         fileHolder = file("build/"+moduleName+"."+moduleType)
+
+        // Add the dependancy
+        dependencies {
+          if(data.dependancy !=null) {
+            data.dependancy.each {
+              depId,depData -> depModuleName = depId
+              compile group: depData.groupId, name: depData.artifactId, version: depData.version
+              runtime group: depData.groupId, name: depData.artifactId, version: depData.version
+            }
+          }
+        }
+
         artifacts {
           archives(fileHolder) {
             name moduleName
@@ -36,6 +51,7 @@ uploadArchives << {
           }
           pom(moduleName).version =data.version
           pom(moduleName).groupId =data.groupId
+          pom(moduleName).artifactId =data.artifactId
 
         }
       }
@@ -43,12 +59,14 @@ uploadArchives << {
   }
 }
 
-task uploadLibraries << {
-  moduleType='jar'
-  tasks.uploadArchives.execute()
+task uploadLibraries  {
+  doFirst{
+    tasks.uploadArchives.execute()
+  }
 }
 
-task uploadWars << {
-  moduleType='war'
-  tasks.uploadArchives.execute()
+task uploadWars  {
+  doFirst{
+    tasks.uploadArchives.execute()
+  }
 }

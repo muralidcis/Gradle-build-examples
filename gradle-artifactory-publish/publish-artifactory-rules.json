@@ -1,16 +1,30 @@
 {
   "jar": {
-    "forupload": {
-      "groupId": "com.new.testinc",
-      "artifactId": "forupload",
+    "example1": {
+      "groupId": "com.example",
+      "artifactId": "example1",
       "version": "SNAPSHOT-1.1",
-    }
-  },
-  "war": {
-    "registration": {
-      "groupId": "com.formsdirectinc",
-      "artifactId": "id-registration",
-      "version": "SNAPSHOT-1.1",
+      "dependancy":{
+        "happy":{
+          "groupId":"com.happy","artifactId":"happy","version":"1.1.1"}
+        }
+      },
+      "example2": {
+        "groupId": "com.example",
+        "artifactId": "example2",
+        "version": "SNAPSHOT-1.1",
+      },
+      "example3": {
+        "groupId": "com.example",
+        "artifactId": "example3",
+        "version": "SNAPSHOT-1.1",
+      }
+    },
+    "war": {
+      "registration": {
+        "groupId": "com.formsdirectinc",
+        "artifactId": "id-registration",
+        "version": "SNAPSHOT-1.1",
+      }
     }
   }
-}
