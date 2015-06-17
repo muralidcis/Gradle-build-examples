@@ -1,0 +1,40 @@
+apply plugin:'maven'
+apply plugin: 'war'
+apply plugin:'java'
+
+// import jsonslurper..... to get json data
+import groovy.json.JsonSlurper
+def MODULE_BUILD_RULES_FILE = "publish-artifactory-rules.json"
+
+def inputFile = new File(MODULE_BUILD_RULES_FILE)
+Object result = new JsonSlurper().parseText(inputFile.text)
+
+// Connection to apache archiva
+repositories {
+  maven {
+    credentials {
+      username '$userName'
+      password '$passWord'
+    }
+    url "$archivaUrl"
+  }
+}
+
+configurations {
+  dependencies
+}
+
+task copyToLib(type: Copy) << {
+  def moduleType='jar'
+  def moduleName
+  dependencies {
+    result[moduleType].each {
+      id,data -> moduleName = id
+      compile(data.groupId+":"+data.artifactId+":"+data.version+"@"+moduleType) {
+        transitive = true
+      }
+    }
+  }
+  into "$buildDir/output/lib"
+  from configurations.runtime
+}
